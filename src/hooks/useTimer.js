@@ -38,6 +38,12 @@ export function useTimer() {
     setIsStarted(!isStarted);
   }
 
+  useEffect(() => {
+    document.addEventListener("keyup", (e) => {
+      if (e.code === "Space") handleTimer();
+    });
+  }, []);
+
   useEffect(setTimerByPage, [page]);
 
   useEffect(() => {
