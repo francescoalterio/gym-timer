@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { timeFormated } from "../services/timeFormated";
 import { PageContext } from "../store/Page";
 import { ThemeContext } from "../store/Theme";
+import { TimerConfigContext } from "../store/TimerConfig";
 
 export function useTimer() {
   const [minutes, setMinutes] = useState(0);
@@ -10,6 +11,7 @@ export function useTimer() {
 
   const [page, pageDispatch] = useContext(PageContext);
   const [theme, themeDispatch] = useContext(ThemeContext);
+  const [timerConfig, timerConfigDispatch] = useContext(TimerConfigContext);
 
   const minutesFormatted = timeFormated(minutes);
   const secondsFormatted = timeFormated(seconds);
@@ -68,12 +70,18 @@ export function useTimer() {
   useEffect(() => {
     if (page.timer === "BREAK") {
       themeDispatch({ type: "FIRST" });
+      setMinutes(timerConfig.BREAK.minutes);
+      setSeconds(timerConfig.BREAK.seconds);
     } else if (page.timer === "EXERCISE") {
       themeDispatch({ type: "SECONDARY" });
+      setMinutes(timerConfig.EXERCISE.minutes);
+      setSeconds(timerConfig.EXERCISE.seconds);
     } else if (page.timer === "SHORT_BREAK") {
       themeDispatch({ type: "ALTERNATIVE" });
+      setMinutes(timerConfig.SHORT_BREAK.minutes);
+      setSeconds(timerConfig.SHORT_BREAK.seconds);
     }
-  }, [page]);
+  }, [page, timerConfig]);
 
   return {
     minutes: minutesFormatted,
